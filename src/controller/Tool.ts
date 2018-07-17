@@ -32,6 +32,12 @@ class Tool {
     });
   }
 
+  public promiseFactory<T>(value: any): Promise<T> {
+    return new Promise((resolve) => {
+      resolve(value);
+    });
+  }
+
 }
 
 export default Tool;

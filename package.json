@@ -12,8 +12,15 @@
         "Other"
     ],
     "activationEvents": [
-        "*"
+        "onLanguage:vue",
+        "onLanguage:scss"
     ],
+    "capabilities" : {
+        "completionProvider" : {
+            "resolveProvider": "true",
+            "triggerCharacters": [ "$" ]
+        }
+    },
     "main": "./out/extension",
     "contributes": {
         "commands": [
@@ -34,9 +41,13 @@
                   "type": "string",
                   "default": ""
                 },
-                "vue-scss-variable-scan.enableEmmetSupport": {
-                  "type": "boolean",
-                  "default": false
+                "vue-scss-variable-scan.addCustomCssProperty": {
+                    "type": "array",
+                    "default": []
+                },
+                "vue-scss-variable-scan.excludeCssProperty": {
+                    "type": "array",
+                    "default": []
                 }
               }
             }
