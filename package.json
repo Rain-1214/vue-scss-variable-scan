@@ -15,12 +15,6 @@
         "onLanguage:vue",
         "onLanguage:scss"
     ],
-    "capabilities" : {
-        "completionProvider" : {
-            "resolveProvider": "true",
-            "triggerCharacters": [ "$" ]
-        }
-    },
     "main": "./out/extension",
     "contributes": {
         "commands": [

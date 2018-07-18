@@ -17,19 +17,19 @@ class Main {
   private tool = Tool.getInstance();
   private notifier = new Notifier('vue-scss-variable-scan.refresh');
   private scssVariables: ScssVariable[] = [];
+  private supportFileType: string[] = ['vue', 'scss'];
   public resourceCheckCssProperty: string[] = [
     "background", "border", "color", "width", "height", "font-size","padding", "margin"
   ];
   public checkCssProperty: string[] = [
     "background", "border", "color", "width", "height", "font-size","padding", "margin"
   ];
-  private supportFileType: string[] = [
-    'vue', 'scss'
-  ];
+  
 
   private constructor () {}
 
   public async scanScssVariable() {
+    this.scssVariables = [];
     this.notifier.notify("eye", "Looking for CSS classes in the workspace...");
     const disposables: Disposable[] = [];
     const config = workspace.getConfiguration();
@@ -84,7 +84,6 @@ class Main {
             return _this.tool.promiseFactory([]);
           }
           const cssProperty = text.split(':')[0].trim();
-          console.log(_this.checkCssProperty);
           if (_this.checkCssProperty.find(e => cssProperty.includes(e)) === undefined) {
             return _this.tool.promiseFactory([]);
           }

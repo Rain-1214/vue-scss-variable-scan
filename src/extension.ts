@@ -2,6 +2,8 @@
 import * as vscode from 'vscode';
 import Main from './controller/Main';
 
+const scssFileChange = vscode.workspace.createFileSystemWatcher('**/*.scss', false, false, false);
+
 export async function activate(context: vscode.ExtensionContext) {
     const main = Main.getInstance();
     await main.scanScssVariable();
@@ -26,13 +28,14 @@ export async function activate(context: vscode.ExtensionContext) {
         }
     }, null, disposables);
 
-    const scssFileChange = vscode.workspace.createFileSystemWatcher('src/**/*.scss', true, false, false);
+    scssFileChange.onDidCreate(async (e) => {
+        await main.scanScssVariable();
+    });
+
     scssFileChange.onDidChange(async (e) => {
-        console.log(1);
         await main.scanScssVariable();
     });
     scssFileChange.onDidDelete(async (e) => {
-        console.log(2);
         await main.scanScssVariable();
     });
 
@@ -48,4 +51,5 @@ export async function activate(context: vscode.ExtensionContext) {
 
 // this method is called when your extension is deactivated
 export function deactivate() {
+    scssFileChange.dispose();
 }
