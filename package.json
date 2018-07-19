@@ -7,6 +7,9 @@
     "engines": {
         "vscode": "^1.25.0"
     },
+    "keywords": [
+        "vue", "scss", "variable", "snippet"
+    ],
     "categories": [
         "Languages",
         "Other"
@@ -16,6 +19,7 @@
         "onLanguage:scss"
     ],
     "main": "./out/extension",
+    "icon": "assets/logo.png",
     "contributes": {
         "commands": [
             {
@@ -46,6 +50,14 @@
               }
             }
         ]
+    },
+    "homepage": "https://github.com/Rain-1214/vue-scss-variable-scan/blob/master/README.md",
+    "bugs": {
+        "url": "https://github.com/Rain-1214/vue-scss-variable-scan/issues"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/Rain-1214/vue-scss-variable-scan"
     },
     "scripts": {
         "vscode:prepublish": "npm run compile",

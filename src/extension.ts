@@ -14,7 +14,6 @@ export async function activate(context: vscode.ExtensionContext) {
         if (e.affectsConfiguration("vue-scss-variable-scan.globalPath") ||
             e.affectsConfiguration("vue-scss-variable-scan.globalExcludePath")) {
                 await main.scanScssVariable();
-                await main.createDisposables(context);
             }
         if (e.affectsConfiguration("vue-scss-variable-scan.addCustomCssProperty")) {
             const newCssProperty = vscode.workspace.getConfiguration().get('vue-scss-variable-scan.addCustomCssProperty') as string[];
