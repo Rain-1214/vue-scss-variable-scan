@@ -102,7 +102,19 @@ class Main {
     }
     for (let i = 0; i < this.scssVariables.length; i++) {
       const currentVar = this.scssVariables[i];
-      if (currentVar.value.startsWith('$')) {
+      if (
+        currentVar.value.startsWith('$') ||
+        currentVar.value.startsWith('var(')
+      ) {
+        currentVar.value = this.getColorByVariable(currentVar.value, 0);
+      }
+    }
+    for (let i = 0; i < this.cssVariables.length; i++) {
+      const currentVar = this.cssVariables[i];
+      if (
+        currentVar.value.startsWith('$') ||
+        currentVar.value.startsWith('var(')
+      ) {
         currentVar.value = this.getColorByVariable(currentVar.value, 0);
       }
     }
@@ -116,11 +128,21 @@ class Main {
     if (deep > 100) {
       return '';
     }
-    const currentVariable = this.scssVariables.find(
-      (item) => item.variable === variable
-    );
+    let currentVariable;
+    if (variable.startsWith('$')) {
+      currentVariable = this.scssVariables.find(
+        (item) => item.variable === variable
+      );
+    } else if (variable.startsWith('var(')) {
+      currentVariable = this.cssVariables.find(
+        (item) => item.variable === variable
+      );
+    }
     if (!!currentVariable) {
-      if (currentVariable.value.startsWith('$')) {
+      if (
+        currentVariable.value.startsWith('$') ||
+        currentVariable.value.startsWith('var(')
+      ) {
         const result = this.getColorByVariable(currentVariable.value, deep + 1);
         return result == '' ? variable : result;
       } else {
@@ -183,7 +205,8 @@ class Main {
           return _this.tool.promiseFactory(items);
         },
       },
-      ':'
+      ':',
+      ' '
     );
   }
 
@@ -224,7 +247,8 @@ class Main {
           return _this.tool.promiseFactory(items);
         },
       },
-      ':'
+      ':',
+      ' '
     );
   }
 }
