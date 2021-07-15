@@ -1,79 +1,79 @@
 {
-    "name": "vue-scss-variable-scan",
-    "displayName": "vue-scss-variable-scan",
-    "description": "",
-    "version": "0.0.1",
-    "publisher": "Rain",
-    "engines": {
-        "vscode": "^1.25.0"
-    },
-    "keywords": [
-        "vue",
-        "scss",
-        "variable",
-        "snippet"
+  "name": "vue-scss-variable-scan",
+  "displayName": "vue-scss-variable-scan",
+  "description": "",
+  "version": "0.0.2",
+  "publisher": "Rain",
+  "engines": {
+    "vscode": "^1.25.0"
+  },
+  "keywords": [
+    "vue",
+    "scss",
+    "variable",
+    "snippet"
+  ],
+  "categories": [
+    "Programming Languages",
+    "Other"
+  ],
+  "activationEvents": [
+    "onLanguage:vue",
+    "onLanguage:scss"
+  ],
+  "main": "./out/extension",
+  "icon": "assets/logo.png",
+  "contributes": {
+    "commands": [
+      {
+        "command": "vue-scss-variable-scan.cache",
+        "title": "Cache SCSS variable"
+      }
     ],
-    "categories": [
-        "Programming Languages",
-        "Other"
-    ],
-    "activationEvents": [
-        "onLanguage:vue",
-        "onLanguage:scss"
-    ],
-    "main": "./out/extension",
-    "icon": "assets/logo.png",
-    "contributes": {
-        "commands": [
-            {
-                "command": "vue-scss-variable-scan.cache",
-                "title": "Cache SCSS variable"
-            }
-        ],
-        "configuration": [
-            {
-                "title": "vue scss variable scan",
-                "properties": {
-                    "vue-scss-variable-scan.globalPath": {
-                        "type": "string",
-                        "default": "src/**/*.scss"
-                    },
-                    "vue-scss-variable-scan.globalExcludePath": {
-                        "type": "string",
-                        "default": ""
-                    },
-                    "vue-scss-variable-scan.addCustomCssProperty": {
-                        "type": "array",
-                        "default": []
-                    },
-                    "vue-scss-variable-scan.excludeCssProperty": {
-                        "type": "array",
-                        "default": []
-                    }
-                }
-            }
-        ]
-    },
-    "homepage": "https://github.com/Rain-1214/vue-scss-variable-scan/blob/master/README.md",
-    "bugs": {
-        "url": "https://github.com/Rain-1214/vue-scss-variable-scan/issues"
-    },
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/Rain-1214/vue-scss-variable-scan"
-    },
-    "scripts": {
-        "vscode:prepublish": "npm run compile",
-        "compile": "tsc -p ./",
-        "watch": "tsc -watch -p ./",
-        "postinstall": "node ./node_modules/vscode/bin/install",
-        "test": "npm run compile && node ./node_modules/vscode/bin/test"
-    },
-    "devDependencies": {
-        "@types/mocha": "^2.2.42",
-        "@types/node": "^7.0.43",
-        "tslint": "^5.8.0",
-        "typescript": "^2.6.1",
-        "vscode": "^1.1.6"
-    }
+    "configuration": [
+      {
+        "title": "vue scss variable scan",
+        "properties": {
+          "vue-scss-variable-scan.globalPath": {
+            "type": "string",
+            "default": "src/**/*.scss"
+          },
+          "vue-scss-variable-scan.globalExcludePath": {
+            "type": "string",
+            "default": ""
+          },
+          "vue-scss-variable-scan.addCustomCssProperty": {
+            "type": "array",
+            "default": []
+          },
+          "vue-scss-variable-scan.excludeCssProperty": {
+            "type": "array",
+            "default": []
+          }
+        }
+      }
+    ]
+  },
+  "homepage": "https://github.com/Rain-1214/vue-scss-variable-scan/blob/master/README.md",
+  "bugs": {
+    "url": "https://github.com/Rain-1214/vue-scss-variable-scan/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Rain-1214/vue-scss-variable-scan"
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "postinstall": "node ./node_modules/vscode/bin/install",
+    "test": "npm run compile && node ./node_modules/vscode/bin/test"
+  },
+  "devDependencies": {
+    "@types/mocha": "^2.2.42",
+    "@types/node": "^7.0.43",
+    "tslint": "^5.8.0",
+    "typescript": "^2.6.1",
+    "vscode": "^1.1.6"
+  }
 }
