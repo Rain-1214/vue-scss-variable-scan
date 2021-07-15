@@ -52,7 +52,7 @@ export async function activate(context: vscode.ExtensionContext) {
     null,
     disposables
   );
-  console.log(disposables);
+
   scssFileChange.onDidCreate(async (e) => {
     await main.scanScssVariable();
   });
