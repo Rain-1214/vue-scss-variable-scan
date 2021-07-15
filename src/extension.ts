@@ -29,6 +29,9 @@ export async function activate(context: vscode.ExtensionContext) {
         const newCssProperty = vscode.workspace
           .getConfiguration()
           .get('vue-scss-variable-scan.addCustomCssProperty') as string[];
+        if (!Array.isArray(newCssProperty)) {
+          return;
+        }
         main.checkCssProperty = [
           ...newCssProperty,
           ...main.resourceCheckCssProperty,
@@ -38,6 +41,9 @@ export async function activate(context: vscode.ExtensionContext) {
         const excludeCssProperty = vscode.workspace
           .getConfiguration()
           .get('vue-scss-variable-scan.excludeCssProperty') as string[];
+        if (!Array.isArray(excludeCssProperty)) {
+          return;
+        }
         main.checkCssProperty = main.resourceCheckCssProperty.filter(
           (e) => !excludeCssProperty.includes(e)
         );
@@ -46,7 +52,7 @@ export async function activate(context: vscode.ExtensionContext) {
     null,
     disposables
   );
-
+  console.log(disposables);
   scssFileChange.onDidCreate(async (e) => {
     await main.scanScssVariable();
   });

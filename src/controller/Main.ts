@@ -27,6 +27,7 @@ class Main {
   private tool = Tool.getInstance();
   private notifier = new Notifier('vue-scss-variable-scan.refresh');
   private scssVariables: ScssVariable[] = [];
+  private cssVariables: ScssVariable[] = [];
   private supportFileType: string[] = ['vue', 'scss'];
   public resourceCheckCssProperty: string[] = [
     'background',
@@ -53,6 +54,7 @@ class Main {
 
   public async scanScssVariable() {
     this.scssVariables = [];
+    this.cssVariables = [];
     this.notifier.notify('eye', 'Looking for CSS classes in the workspace...');
     const disposables: Disposable[] = [];
     const config = workspace.getConfiguration();
@@ -86,9 +88,13 @@ class Main {
           const key = value.split(':')[0].trim();
 
           if (key.startsWith('$')) {
-            console.log(key, value.split(':')[1].trim());
             this.scssVariables.push(
               new ScssVariable(key, value.split(':')[1].trim())
+            );
+          }
+          if (key.startsWith('--')) {
+            this.cssVariables.push(
+              new ScssVariable(`var(${key})`, value.split(':')[1].trim())
             );
           }
         }
@@ -102,7 +108,7 @@ class Main {
     }
     this.notifier.notify(
       'eye',
-      `Looking for scss variable completed and find ${this.scssVariables.length} variable`
+      `Looking for scss variable completed and find ${this.scssVariables.length} variable and ${this.cssVariables.length} css variable`
     );
   }
 
@@ -115,7 +121,8 @@ class Main {
     );
     if (!!currentVariable) {
       if (currentVariable.value.startsWith('$')) {
-        return this.getColorByVariable(currentVariable.value, deep + 1);
+        const result = this.getColorByVariable(currentVariable.value, deep + 1);
+        return result == '' ? variable : result;
       } else {
         return currentVariable.value;
       }
@@ -126,16 +133,17 @@ class Main {
   public createDisposables(context: ExtensionContext) {
     for (let i = 0; i < this.supportFileType.length; i++) {
       context.subscriptions.push(
-        this.registerCompletionItem(this.supportFileType[i], /:([\s\S]*)/)
+        this.registerScssCompletionItem(this.supportFileType[i], /:([\s\S]*)/)
+      );
+      context.subscriptions.push(
+        this.registerCssCompletionItem(this.supportFileType[i], /:([\s\S]*)/)
       );
     }
   }
 
-  public registerCompletionItem(
+  public registerScssCompletionItem(
     languageSelector: string,
-    matchRegex: RegExp,
-    classPrefix: string = '',
-    splitChar: string = ' '
+    matchRegex: RegExp
   ) {
     const _this = this;
     return languages.registerCompletionItemProvider(
@@ -154,11 +162,13 @@ class Main {
             return _this.tool.promiseFactory([]);
           }
           const cssProperty = text.split(':')[0].trim();
-          if (
-            _this.checkCssProperty.find((e) => cssProperty.includes(e)) ===
-            undefined
-          ) {
-            return _this.tool.promiseFactory([]);
+          if (!_this.checkCssProperty.includes('ALL')) {
+            if (
+              _this.checkCssProperty.find((e) => cssProperty.includes(e)) ===
+              undefined
+            ) {
+              return _this.tool.promiseFactory([]);
+            }
           }
           const items = [];
           for (let i = 0; i < _this.scssVariables.length; i++) {
@@ -168,6 +178,47 @@ class Main {
             );
             item.filterText = _this.scssVariables[i].variable;
             item.detail = _this.scssVariables[i].value;
+            items.push(item);
+          }
+          return _this.tool.promiseFactory(items);
+        },
+      },
+      ':'
+    );
+  }
+
+  public registerCssCompletionItem(
+    languageSelector: string,
+    matchRegex: RegExp
+  ) {
+    const _this = this;
+    return languages.registerCompletionItemProvider(
+      { scheme: 'file', language: languageSelector },
+      {
+        provideCompletionItems(
+          document: TextDocument,
+          position: Position
+        ): Thenable<CompletionItem[]> {
+          const start = new Position(position.line, 0);
+          const range: Range = new Range(start, position);
+          const text: string = document.getText(range);
+
+          const rawText: RegExpMatchArray | null = text.match(matchRegex);
+          if (!rawText) {
+            return _this.tool.promiseFactory([]);
+          }
+
+          const items = [];
+          for (let i = 0; i < _this.cssVariables.length; i++) {
+            const itemType = _this.cssVariables[i].value.startsWith('#')
+              ? CompletionItemKind.Color
+              : CompletionItemKind.Value;
+            const item = new CompletionItem(
+              _this.cssVariables[i].variable,
+              itemType
+            );
+            item.filterText = _this.cssVariables[i].variable;
+            item.detail = _this.cssVariables[i].value;
             items.push(item);
           }
           return _this.tool.promiseFactory(items);
